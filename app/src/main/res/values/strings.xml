@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">innobuzz</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="accessibility_service_label">Innobuzz_Service</string>
+    <string name="accessibility_service_description">Service_desc..</string>
+    <string name="accessibility">Accessibility</string>
+</resources>
