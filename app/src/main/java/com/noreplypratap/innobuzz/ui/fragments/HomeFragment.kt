@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
@@ -20,6 +19,7 @@ import com.noreplypratap.innobuzz.model.UsersPostsModel
 import com.noreplypratap.innobuzz.ui.adapters.UsersDataAdapter
 import com.noreplypratap.innobuzz.utils.Constants
 import com.noreplypratap.innobuzz.utils.Resource
+import com.noreplypratap.innobuzz.utils.Utils
 import com.noreplypratap.innobuzz.utils.isOnline
 import com.noreplypratap.innobuzz.viewmodel.IbUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,9 +46,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-        if (Constants.status){
+        if (Utils.status){
             Toast.makeText(context,"WhatsApp Launched", Toast.LENGTH_SHORT).show()
-            Constants.status = false
+            Utils.status = false
         }
     }
 
@@ -74,17 +74,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun loadFromDB() {
         showProgressBar()
-        ibUserViewModel.getSavedData().observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()){
+        ibUserViewModel.getSavedData().observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
                 setRecyclerView(it as ArrayList<UsersPostsModel>)
                 hideProgressBar()
-            }else if(context?.isOnline() == true){
+            } else if (context?.isOnline() == true) {
                 apiCall()
-            }else{
-                Log.d(Constants.TAG,"No Internet")
-                Toast.makeText(context,"No Internet", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.d(Constants.TAG, "No Internet")
+                Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
 
     }
@@ -95,13 +95,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             Log.d(Constants.TAG,"Data received.....")
         }
 
-        ibUserViewModel.usersPost.observe(viewLifecycleOwner, Observer {  data ->
-            when(data){
+        ibUserViewModel.usersPost.observe(viewLifecycleOwner) { data ->
+            when (data) {
                 is Resource.Success -> {
                     hideProgressBar()
                     data.data?.let {
                         ibUserViewModel.saveDataToDb(it.toList()).invokeOnCompletion {
-                            Log.d(Constants.TAG,"Data Saved to DB..........")
+                            Log.d(Constants.TAG, "Data Saved to DB..........")
                         }
                         setRecyclerView(it)
                     }
@@ -113,7 +113,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     showProgressBar()
                 }
             }
-        })
+        }
     }
 
     private fun hideProgressBar() {
@@ -133,7 +133,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         usersDataAdapter.setOnClickListener {
-            Log.d(Constants.TAG,"Clicked.........")
+            Log.d(Constants.TAG,"Clicked.......")
             val bundle = Bundle()
             bundle.putString("nextData" , Gson().toJson(it))
             findNavController().navigate(R.id.action_homeFragment_to_postDataFragment,bundle)

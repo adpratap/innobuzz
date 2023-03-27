@@ -9,7 +9,6 @@ import com.noreplypratap.innobuzz.model.UsersPostsModel
 
 @Dao
 interface UsersPostDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveIbUsersPostsToDatabase(article: List<UsersPostsModel>)
 
@@ -18,4 +17,5 @@ interface UsersPostDao {
 
     @Query("DELETE FROM UsersPostsTable")
     suspend fun deletePostsFromDB()
+
 }

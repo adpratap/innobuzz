@@ -17,9 +17,7 @@ abstract class DatabaseUsersPosts : RoomDatabase() {
     companion object{
         @Volatile
         private var instance : DatabaseUsersPosts? = null
-
         fun createDatabase(context: Context) : DatabaseUsersPosts {
-
             if (instance == null){
                 synchronized(this){
                     instance = Room.databaseBuilder(

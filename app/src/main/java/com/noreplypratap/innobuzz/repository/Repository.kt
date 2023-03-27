@@ -7,16 +7,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class Repository @Inject constructor(private val ibServices: IbServices , private val usersPostDao: UsersPostDao) {
-
-    suspend fun getUserPosts() : Response<ArrayList<UsersPostsModel>> {
-        return ibServices.getDataFromAPI()
-    }
-
-    suspend fun saveToDB(data : List<UsersPostsModel>) {
-        usersPostDao.saveIbUsersPostsToDatabase(data)
-    }
-
+    suspend fun getUserPosts() = ibServices.getDataFromAPI()
+    suspend fun saveToDB(data : List<UsersPostsModel>) = usersPostDao.saveIbUsersPostsToDatabase(data)
     fun getDataFromDB() = usersPostDao.getIbUsersPostsFromDatabase()
-
 
 }

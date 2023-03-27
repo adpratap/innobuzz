@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noreplypratap.innobuzz.R
 import com.noreplypratap.innobuzz.model.UsersPostsModel
 
-class UsersDataAdapter( var usersPostsData : MutableList<UsersPostsModel>) : RecyclerView.Adapter<UsersDataAdapter.ViewHolder>()  {
+class UsersDataAdapter(private var usersPostsData : MutableList<UsersPostsModel>) : RecyclerView.Adapter<UsersDataAdapter.ViewHolder>()  {
 
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
