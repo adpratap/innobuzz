@@ -1,22 +1,36 @@
 package com.noreplypratap.innobuzz.accessibility
 
 import android.accessibilityservice.AccessibilityService
-import android.util.Log
+import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
-import com.noreplypratap.innobuzz.utils.Constants
-import com.noreplypratap.innobuzz.utils.Utils.status
+import com.noreplypratap.innobuzz.service.TrackerService
+import com.noreplypratap.innobuzz.utils.Constants.DataKeyID
+import com.noreplypratap.innobuzz.utils.Constants.PackageName
+import com.noreplypratap.innobuzz.utils.Constants.ToastMessage
+import com.noreplypratap.innobuzz.utils.logger
 
 class MyAccessibilityService : AccessibilityService() {
-
+    private var lastTimeDelay: Long = 0L
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        if (event.packageName == "com.whatsapp" && event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            // WhatsApp is opened
-            status = true
-            //Toast.makeText(applicationContext, "WhatsApp is opened", Toast.LENGTH_SHORT).show()
-            Log.d(Constants.TAG,"WhatsApp is opened!!............")
+        if (event.packageName == PackageName && event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            logger(ToastMessage)
+            val currentTimeMillis = System.currentTimeMillis()
+            if ((currentTimeMillis - lastTimeDelay) > 3000L) {
+                lastTimeDelay = currentTimeMillis
+                sendDataToService()
+            }
+
         }
     }
-    override fun onInterrupt() {
-        // Do nothing
+
+    private fun sendDataToService() {
+        val serviceIntent = Intent(this, TrackerService::class.java)
+        serviceIntent.putExtra(DataKeyID, ToastMessage)
+        startService(serviceIntent)
     }
+
+    override fun onInterrupt() {
+        logger("onInterrupt!!")
+    }
+
 }
