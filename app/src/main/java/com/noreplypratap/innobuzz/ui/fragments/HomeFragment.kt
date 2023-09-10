@@ -125,6 +125,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.progressBar.visibility = View.VISIBLE
     }
 
+
     private fun setRecyclerView(usrData : ArrayList<UsersPostsModel>){
         val usersDataAdapter =  UsersDataAdapter(usrData)
         binding.rvUsersPosts.apply {
